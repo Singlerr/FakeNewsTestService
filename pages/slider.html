@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <title>질문에 답을 해주세요</title>
+
+    <!-- script -->
+    <script type="text/javascript">
+        let st = new Array(0,0,0,0,0,0);
+        window.onload = function(){
+            document.getElementById("result").hidden = true;
+            document.getElementById("showresult").hidden = true;
+            rl = document.getElementById("resultlabel").hidden = true;
+        }
+        function next(){
+            $('.slider').slider('next');
+        }
+        function stop(){
+            $('.slider').slider('pause');
+        }
+        function set(step,index){
+            st[step] = index;
+        }
+        function showResult(){
+            rl = document.getElementById("resultlabel");
+            var k = 0;
+            for(var i = 0;i<st.length;i++){
+                if(st[i] == 0){
+                    k++;
+                }
+            }
+            if(k >= 1){
+                rl.innerText = "응답하지 않은 질문이 "+k+"개 있습니다";
+                rl.hidden = false;
+                document.getElementById("showresult").hidden = true;
+            }else{
+                rl.hidden = true;
+            }
+        }
+        function getUrlParams() {
+            var params = {};
+            window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+            return params;
+        }
+        function handOver(){
+           var k = 0;
+            for(var i = 0;i<st.length;i++){
+                if(st[i] == 0){
+                  k++;
+                }
+            }
+           var l = 0;
+            for(var a=0;a<st.length;a++){
+                if(st[a] == 1){
+                    l++;
+                }
+            }
+            if(k == 0) {
+                query = getUrlParams()
+                var queryString = "?k=" + l+"&key="+query.key;
+                window.location.href = "result.html" + queryString;
+            }
+
+        }
+    </script>
+    <nav class="green" role="navigation">
+        <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">NewsHelper</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="#">C</a></li>
+            </ul>
+            <ul id="nav-mobile" class="sidenav">
+            </ul>
+        </div>
+    </nav>
+    <div class="section" id="banner">
+        <div class="container">
+            <br><br>
+            <h5 class="red-text text-accent-1 header center">! 아래 질문에 대한 답을 해주세요. !</h5>
+            <h6 class="red-text text-accent-1 header center">TIP! 너무 세밀하게 답변하려 하지 마시고 더 그럴듯한 답변을 선택해주세요.</h6>
+            <div class="slider">
+                <ul class="slides">
+                    <li>
+                        <img src="./imgs/whitebackground.jpg">
+                        <div class="caption left-align">
+                            <h5 class="blue-text text-accent-1">Step.1 </h5>
+                            <h4 class="black-text text-accent-1">이 뉴스를 보도한 방송(언론)사를 전에 들어본 적이 있나요?</h4>
+                            <form action="#">
+                                <p>
+                                    <label>
+                                        <input name="g1" type="radio" radio onclick="set(0,1);next();stop()" />
+                                        <span>네</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input name="g1"  type="radio" radio onclick="set(0,-1);next();stop()" />
+                                        <span>아니오</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="./imgs/whitebackground.jpg">
+                        <div class="caption left-align">
+                            <h5 class="blue-text text-accent-1">Step.2 </h5>
+                            <h5 class="black-text text-accent-1">이 뉴스에서 보여주는 정보를 제공한 곳을 들어본 적이 있나요?</h5>
+                            <h6 class="red-text text-accent-1">(예시) 통계청, 질병관리본부....</h6>
+                            <form action="#">
+                                <p>
+                                    <label>
+                                        <input name="g1" type="radio" radio onclick="set(1,1);next();stop()" />
+                                        <span>네</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input name="g1" type="radio" radio onclick="set(1,-1);next();stop()" />
+                                        <span>아니오</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="./imgs/whitebackground.jpg">
+                        <div class="caption left-align">
+                            <h5 class="blue-text text-accent-1">Step.3 </h5>
+                            <h4 class="black-text text-accent-1">이 뉴스가 보도하는 사건이 일어난 장소가 구체적으로 나와있나요?</h4>
+                            <form action="#">
+                                <p>
+                                    <label>
+                                        <input name="g1" type="radio" radio onclick="set(2,1);next();stop()" />
+                                        <span>네</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input name="g1" type="radio" radio onclick="set(2,-1);next();stop()" />
+                                        <span>아니오</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="./imgs/whitebackground.jpg">
+                        <div class="caption left-align">
+                            <h5 class="blue-text text-accent-1">Step.4 </h5>
+                            <h4 class="black-text text-accent-1">이 뉴스를 다른 방송사에서도 보도했나요?</h4>
+                            <form action="#">
+                                <p>
+                                    <label>
+                                        <input name="g1" type="radio" radio onclick="set(3,1);next();stop()" />
+                                        <span>네</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input name="g1" type="radio" radio onclick="set(3,-1);next();stop()" />
+                                        <span>아니오</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="./imgs/whitebackground.jpg">
+                        <div class="caption left-align">
+                            <h5 class="blue-text text-accent-1">Step.5 </h5>
+                            <h5 class="black-text text-accent-1">이 뉴스 보도 내용을 뒷받침하는 근거가 있나요?</h5>
+                            <h6 class="red-text text-accent-1">(예시) 코로나 바이러스 사망자수를 보도한다면, '정부에서 발표한 사망자수'는 이 보도 내용을 뒷받침합니다.</h6>
+                            <form action="#">
+                                <p>
+                                    <label>
+                                        <input name="g1" type="radio" radio onclick="set(4,1);next();stop()"  />
+                                        <span>네</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input name="g1" type="radio" radio onclick="set(4,-1);next();stop()" />
+                                        <span>아니오</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="./imgs/whitebackground.jpg">
+                        <div class="caption left-align">
+                            <h5 class="blue-text text-accent-1">Step.6 </h5>
+                            <h4 class="black-text text-accent-1">이 뉴스의 보도 내용이 나중에 달라질 가능성이 있나요?</h4>
+                            <form action="#">
+                                <p>
+                                    <label>
+                                        <input name="g1"type="radio" radio onclick="set(5,-1);next();stop();showResult()"  />
+                                        <span>네</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input name="g1" type="radio" radio onclick="set(5,1);next();stop();showResult()" />
+                                        <span>아니오</span>
+                                    </label>
+                                </p>
+                            </form>
+                        </div>
+                    </li>
+                    <li>
+                        <img src="./imgs/whitebackground.jpg">
+                        <div class="caption left-align">
+                            <h3 class="black-text text-accent-1 ">테스트가 끝났습니다</h3>
+                            <h4 class="red-text text-accent-2" id="resultlabel">! 검사가 제대로 이루어지지 않았습니다.</h4>
+                          <a button onclick="handOver()" id="showresult" class="btn-large waves-effect">검사 결과 확인하기</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <br><br>
+
+            <br><br>
+
+        </div>
+    </div>
+
+
+</head>
+<body>
+<!--  Scripts-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="js/materialize.js"></script>
+<script src="js/init.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $('.slider').slider();
+        $('.slider').slider('pause');
+    });
+
+</script>
+</body>
+</html>

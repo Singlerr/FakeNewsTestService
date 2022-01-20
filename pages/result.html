@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="pragma" content="no-store"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="Expires" content="-1"/>
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <title>측정 결과</title>
+
+    <!-- script -->
+    <script type="text/javascript">
+        queries = getUrlParams();
+        let k = queries.k;
+        window.onload = function(){
+            document.getElementById("low").hidden = true;
+            document.getElementById("med").hidden = true;
+            document.getElementById("high").hidden = true;
+            document.getElementById("lowdes").hidden = true;
+            document.getElementById("meddes").hidden = true;
+            document.getElementById("highdes").hidden = true;
+            if(k >= 5 && k<=6){
+                document.getElementById("low").hidden = false;
+                document.getElementById("lowdes").hidden = false;
+            }
+            if(k>=3 && k<=4){
+                document.getElementById("med").hidden = false;
+                document.getElementById("meddes").hidden = false;
+            }
+            if(k<=2){
+                document.getElementById("high").hidden = false;
+                document.getElementById("highdes").hidden = false;
+            }
+
+        }
+
+      /*  function add(company,result){
+            var row = document.all("result").insertRow();
+        rr = row.insertCell(row);
+            rr.innerHTML='<tr><td>'+company+'</td><td>'+result+'</td></tr>';
+        }
+
+       */
+   /*   function add(company,result){
+            var tableRef = document.getElementById('ta').getElementsByTagName('tbody')[0];
+            var newRow   = tableRef.insertRow();
+            var comp  = newRow.insertCell(0);
+            var titl = newRow.insertCell(1);
+            var comt  = document.createTextNode(company);
+            var tt = document.createTextNode(result.replace("<b>","").replace("</b>","").replace("&quot;",""));
+            comp.appendChild(comt);
+            titl.appendChild(tt);
+        }*/
+        function getUrlParams() {
+            var params = {};
+            window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+            return params;
+        }
+    </script>
+    <nav class="green" role="navigation">
+        <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">NewsHelper</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="#"></a></li>
+            </ul>
+
+            <ul id="nav-mobile" class="sidenav">
+                <li><a href="#"></a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="section no-pad-bot" id="banner">
+        <div class="container">
+            <br><br>
+            <h3 class="head center black-text">최종 결과</h3>
+            <h2 class="head center black-text">가짜  뉴스 위험도는</h2>
+            <h1 class="head center green-text accent-1" id="low">낮음</h1>
+            <h5 class="head center black-text" id="lowdes">이 뉴스의 가짜뉴스 위험성은 낮습니다.</h5>
+            <h1 class="head center blue-text accent-1" id="med">보통</h1>
+            <h5 class="head center black-text" id="meddes">이 뉴스의 가짜뉴스 위험성은 보통입니다. 주의하실 필요가 있습니다.</h5>
+            <h1 class="head center red-text accent-1" id="high">높음</h1>
+            <h5 class="head center black-text" id="highdes">이 뉴스의 가짜뉴스 위험성은 높습니다. 이 뉴스가 가짜뉴스일 확률이 높습니다.</h5>
+            <h6 class="head center red-text accent-1">아래 뉴스는 해당 단어를 포함하는 뉴스들입니다. 2개 이상의 방송사가 이 뉴스를 보도하지 않았다면 가짜뉴스일 확률이 높습니다</h6>
+            <table class="highlight" id="ta">
+                <thead>
+                <tr>
+                    <th>링크</th>
+                    <th>언론사</th>
+                    <th>뉴스</th>
+                </tr>
+                </thead>
+                <tbody id="result">
+                </tbody>
+            </table>
+            <br><br>
+
+        </div>
+    </div>
+
+
+</head>
+<body>
+<!--  Scripts-->
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="js/materialize.js"></script>
+<script src="js/init.js"></script>
+<script type="text/javascript" language="javascript">
+     $(document).ready(function(){
+         $.ajax({
+             type:"GET",
+             url:"http://45.32.9.107:8080/news/"+queries.key,
+             dataType:"json",
+             async:true,
+             success: function(json){
+                 $.each(json,function(idx,row){
+                     add(json[idx].company,json[idx].title,json[idx].link);
+                 });
+             },
+             error: function(a,b,error){
+                 alert("일시적인 오류가 발생했습니다.");
+             },
+             done: function(){
+             }
+         });
+     })
+   function add(company,result,link){
+    $('#result').append("<tr><td><a href='"+link+"' id='go-button' class='btn-small waves-effect waves-light green'>Go</a></td> <td>"+company+"</td><td>"+replaceAll(result,"<b>","<b class='red-text'>")+"</td></tr>");
+  }
+   function replaceAll(str, searchStr, replaceStr) {
+        return str.split(searchStr).join(replaceStr);
+    }
+</script>
+</body>
+</html>
